@@ -1,8 +1,9 @@
 import os
 import pygame
+import random as r
 
 
-size = WIDTH, HEIGHT = 550, 550
+size = WIDTH, HEIGHT = 950, 950
 screen = pygame.display.set_mode(size)
 
 
@@ -30,13 +31,16 @@ def load_level(filename):
     return list(map(lambda x: x.ljust(max_width, "."), level_map))
 
 
-tile_images = {"wall": load_image("box.png"), "empty": load_image("grass.png")}
+tile_images = {"wall": load_image("wood.png"), "empty": load_image("grass.png"), "iron": load_image("iron.png")}
 player_image = load_image("mar.png", -1)
+enemy_image = load_image("bomb.png")
 tile_width = tile_height = 50
 player = None
 tiles_grass_group = pygame.sprite.Group()
+tiles_iron_group = pygame.sprite.Group()
 tiles_box_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
 tiles_bomb_group = pygame.sprite.Group()
 
 
@@ -50,6 +54,13 @@ class Tile_box(pygame.sprite.Sprite):
 class Tile_grass(pygame.sprite.Sprite):
     def __init__(self, tile_type, pos_x, pos_y):
         super().__init__(tiles_grass_group)
+        self.image = tile_images[tile_type]
+        self.rect = self.image.get_rect().move(tile_width * pos_x, tile_height * pos_y)
+
+
+class Tile_iron(pygame.sprite.Sprite):
+    def __init__(self, tile_type, pos_x, pos_y):
+        super().__init__(tiles_iron_group)
         self.image = tile_images[tile_type]
         self.rect = self.image.get_rect().move(tile_width * pos_x, tile_height * pos_y)
 
@@ -100,15 +111,56 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = HEIGHT
 
 
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y):
+        super().__init__(enemy_group)
+        self.image = enemy_image
+        self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
+        self.speedx = 0
+        self.speedy = 0
+        self.move = [-1, -1, 1, 1]
+        self.i = 0
+
+    def update(self):
+        self.speedx = 0
+        self.speedy = 0
+
+        if self.i % 4 in [0, 2]:
+            self.speedx = 3 * self.move[self.i % 4]
+        else:
+            self.speedy = 3 * self.move[self.i % 4]
+
+
+        self.rect_0 = (self.rect.x, self.rect.y)
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if pygame.sprite.spritecollideany(self, tiles_box_group) or\
+                pygame.sprite.spritecollideany(self, tiles_iron_group):
+            self.rect.x = self.rect_0[0]
+            self.rect.y = self.rect_0[1]
+            self.i += 1
+
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
+
+
 def generate_level_(level):
     new_player, x, y = None, None, None
     for y in range(len(level)):
         for x in range(len(level[y])):
-            if level[y][x] == '.':
-                Tile_grass('empty', x, y)
-            elif level[y][x] == '#':
+            Tile_grass('empty', x, y)
+            if level[y][x] == '#':
                 Tile_box('wall', x, y)
-            elif level[y][x] == '@':
-                Tile_grass('empty', x, y)
+            elif level[y][x] == '*':
+                Tile_iron("iron", x, y)
+            elif level[y][x] == '1':
                 new_player = Player(x, y)
+            elif level[y][x] == "2":
+                Enemy(x, y)
     return new_player, x, y

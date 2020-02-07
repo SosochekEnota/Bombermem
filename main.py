@@ -5,7 +5,7 @@ import random as r
 
 FPS = 60
 clock = pygame.time.Clock()
-player, level_x, level_y = generate_level_(load_level('map_1.txt'))
+player, level_x, level_y = generate_level_(load_level('map_2.txt'))
 running = True
 while running:
     for event in pygame.event.get():
@@ -15,10 +15,13 @@ while running:
             r.choice(clips).preview()
             screen = pygame.display.set_mode(size)
     player_group.update()
+    enemy_group.update()
     tiles_grass_group.draw(screen)
     tiles_box_group.draw(screen)
+    tiles_iron_group.draw(screen)
     tiles_bomb_group.draw(screen)
     player_group.draw(screen)
+    enemy_group.draw(screen)
     clock.tick(FPS)
     pygame.display.flip()
 
