@@ -15,12 +15,8 @@ def play_music(song):
         pygame.mixer.music.play(loops=-1)
 
 
-def stop_music(song):
-    if type(song) == list:
-        pass
-    else:
-        pygame.mixer.music.load(song)
-        pygame.mixer.music.stop()
+def stop_music():
+    pygame.mixer.music.stop()
 
 
 music_list = ["data\\game_10.mp3", "data\\game_2.mp3", "data\\game_1.mp3", "data\\game_3.mp3",

@@ -69,6 +69,6 @@ while running_main:
         running = start_button.update()
         if running:
             running_main = False
-            stop_music(main_menu_music)
+            stop_music()
         check = False
     pygame.display.flip()

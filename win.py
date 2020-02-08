@@ -4,6 +4,7 @@ from music import stop_music, play_music, win_music
 from load_image import load_image
 import random as r
 from video import clips
+import time
 
 win_screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Bombermem")
@@ -74,8 +75,11 @@ def win(player):
         if check:
             restart = start_button.update()
             if restart:
+                stop_music()
+                play_music("data\\smile.mp3")
+                time.sleep(18)
+                stop_music()
+                play_music(win_music)
                 running_win = False
-                stop_music(win_music)
-                os.startfile("main.py")
             check = False
         pygame.display.flip()

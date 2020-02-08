@@ -54,15 +54,20 @@ class PlayerOne(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
 
+        self.image = load_image("steve.png")
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_a]:
             self.speedx = -4
+            self.image = load_image("steve_2.png")
         if keystate[pygame.K_d]:
             self.speedx = 4
+            self.image = load_image("steve_1.png")
         if keystate[pygame.K_s]:
             self.speedy = 4
+            self.image = load_image("steve.png")
         if keystate[pygame.K_w]:
             self.speedy = -4
+            self.image = load_image("steve_3.png")
 
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
@@ -101,15 +106,20 @@ class PlayerTwo(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
 
+        self.image = load_image("alex.png")
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT]:
             self.speedx = -4
+            self.image = load_image("alex_2.png")
         if keystate[pygame.K_RIGHT]:
             self.speedx = 4
+            self.image = load_image("alex_1.png")
         if keystate[pygame.K_DOWN]:
             self.speedy = 4
+            self.image = load_image("alex.png")
         if keystate[pygame.K_UP]:
             self.speedy = -4
+            self.image = load_image("alex_3.png")
 
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
