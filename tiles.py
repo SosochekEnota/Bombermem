@@ -55,13 +55,13 @@ class PlayerOne(pygame.sprite.Sprite):
         self.speedy = 0
 
         keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
+        if keystate[pygame.K_a]:
             self.speedx = -4
-        if keystate[pygame.K_RIGHT]:
+        if keystate[pygame.K_d]:
             self.speedx = 4
-        if keystate[pygame.K_DOWN]:
+        if keystate[pygame.K_s]:
             self.speedy = 4
-        if keystate[pygame.K_UP]:
+        if keystate[pygame.K_w]:
             self.speedy = -4
 
         self.rect_0 = (self.rect.x, self.rect.y)
@@ -102,13 +102,13 @@ class PlayerTwo(pygame.sprite.Sprite):
         self.speedy = 0
 
         keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_a]:
+        if keystate[pygame.K_LEFT]:
             self.speedx = -4
-        if keystate[pygame.K_d]:
+        if keystate[pygame.K_RIGHT]:
             self.speedx = 4
-        if keystate[pygame.K_s]:
+        if keystate[pygame.K_DOWN]:
             self.speedy = 4
-        if keystate[pygame.K_w]:
+        if keystate[pygame.K_UP]:
             self.speedy = -4
 
         self.rect_0 = (self.rect.x, self.rect.y)

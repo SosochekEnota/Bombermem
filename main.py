@@ -4,6 +4,7 @@ from main_menu import running
 from video import *
 from load_level import load_level
 from create_level import create_level
+from win import win
 from music import play_music, stop_music, music_list
 import pygame
 import random as r
@@ -12,7 +13,7 @@ import random as r
 FPS = 60
 running_win = False
 clock = pygame.time.Clock()
-#create_level()
+create_level()
 player_1, player_2 = generate_level_(load_level("map.txt"))
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Bombermem")
@@ -28,10 +29,10 @@ while running:
             screen = pygame.display.set_mode(size)
         if not player_1.check():
             running = False
-            running_win = True
-        if not player_1.check():
+            win("second.png")
+        if not player_2.check():
             running = False
-            running_win = True
+            win("first.png")
     player_1_group.update()
     player_2_group.update()
     enemy_group.update()

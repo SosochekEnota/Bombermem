@@ -8,5 +8,5 @@ clip3 = VideoFileClip("data\\keanu.mp4", target_resolution=size)
 clip4 = VideoFileClip("data\\flex_1.mp4", target_resolution=size)
 clip6 = VideoFileClip("data\\john.mp4", target_resolution=size)
 clip5 = VideoFileClip("data\\check.mp4", target_resolution=(500, 500))
-clips = [clip1, clip2, clip3, clip4]
+clips = [clip1, clip2, clip3, clip4, clip6]
 
