@@ -3,6 +3,10 @@ from random import randint as rng
 FIELD_SIZE = 19
 
 map_matrix = [['#' if rng(0, 1) else '.' for _ in range(FIELD_SIZE)] for _ in range(FIELD_SIZE)]
+for elem in map_matrix:
+    for k in range(len(elem)):
+        if not rng(0, 20):
+            elem[k] = 'E'
 
 for k in range(FIELD_SIZE):
     for l in range(FIELD_SIZE):
