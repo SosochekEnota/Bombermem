@@ -118,6 +118,7 @@ class BombExplosion(pygame.sprite.Sprite):
             PowerUp(elem.rect.x, elem.rect.y)
         pygame.sprite.spritecollide(self, player_1_group, True)
         pygame.sprite.spritecollide(self, player_2_group, True)
+        pygame.sprite.spritecollide(self, enemy_group, True)
 
     def remove_explosion(self):
         tiles_explosion_group.remove(self)
@@ -146,7 +147,7 @@ class PowerUp(pygame.sprite.Sprite):
         elif self.type == "bomb_amount":
             player_id.max_bomb_placed += 1
         else:
-            player_id.character_velocity += 0.25
+            player_id.velocity += 0.25
 
 
 #  Класс Игрока 1
@@ -318,25 +319,26 @@ class Enemy(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.move = [-1, -1, 1, 1]
-        self.i = 0
+        self.direction = 0
 
     def update(self):
         self.speedx = 0
         self.speedy = 0
 
-        if self.i % 4 in [0, 2]:
-            self.speedx = 3 * self.move[self.i % 4]
+        if self.direction % 4 in [0, 2]:
+            self.speedx = 3 * self.move[self.direction % 4]
         else:
-            self.speedy = 3 * self.move[self.i % 4]
+            self.speedy = 3 * self.move[self.direction % 4]
 
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         if pygame.sprite.spritecollideany(self, tiles_box_group) or\
-                pygame.sprite.spritecollideany(self, tiles_iron_group):
+                pygame.sprite.spritecollideany(self, tiles_iron_group) or\
+                pygame.sprite.spritecollideany(self, tiles_bomb_group):
             self.rect.x = self.rect_0[0]
             self.rect.y = self.rect_0[1]
-            self.i += 1
+            self.direction += 1
 
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH

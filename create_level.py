@@ -8,6 +8,10 @@ FIELD_SIZE = 19
 def create_level():
     field = [["#" if r(0, 1) else "." for _ in range(FIELD_SIZE)] for _ in range(FIELD_SIZE)]
 
+    for elem in field:
+        for k in range(len(elem)):
+            if not r(0, 20):
+                elem[k] = "E"
     for i in range(FIELD_SIZE):
         for j in range(FIELD_SIZE):
             if i % 2 == 0 and j % 2 == 0:
