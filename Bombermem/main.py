@@ -24,9 +24,10 @@ while running:
     tiles_box_group.draw(screen)
     tiles_bomb_group.draw(screen)
     tiles_explosion_group.draw(screen)
-    tiles_iron_group.draw(screen)
+    power_ups_group.draw(screen)
     player_group.draw(screen)
     enemy_group.draw(screen)
+    tiles_iron_group.draw(screen)
     clock.tick(FPS)
     pygame.display.flip()
 

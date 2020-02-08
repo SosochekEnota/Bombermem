@@ -1,4 +1,5 @@
 import os
+from random import sample
 
 import pygame
 
@@ -44,6 +45,7 @@ player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 tiles_explosion_group = pygame.sprite.Group()
 tiles_bomb_group = pygame.sprite.Group()
+power_ups_group = pygame.sprite.Group()
 
 
 class Tile_box(pygame.sprite.Sprite):
@@ -111,10 +113,8 @@ class Bomb(pygame.sprite.Sprite):
         self.create_explosion(0, 0)
 
     def create_explosion(self, k, m):
-        print(k, m)
         explosion = Bomb_explosion(self.pos_x + k * tile_height,
                                    self.pos_y + m * tile_height)
-        print(self.pos_x + k * tile_height, self.pos_y + m * tile_height, '\n')
         intersects = explosion.intersection()
         explosion.explode()
         if intersects:
@@ -126,7 +126,7 @@ class Bomb_explosion(pygame.sprite.Sprite):
         super().__init__(tiles_explosion_group)
         self.image = load_image('boom.png')
         self.rect = self.image.get_rect().move(pos_x, pos_y)
-        self.timer = 50
+        self.timer = 20
 
     def intersection(self):
         if pygame.sprite.spritecollide(self, tiles_box_group, False) or \
@@ -135,7 +135,8 @@ class Bomb_explosion(pygame.sprite.Sprite):
         return False
 
     def explode(self):
-        pygame.sprite.spritecollide(self, tiles_box_group, True)
+        for elem in pygame.sprite.spritecollide(self, tiles_box_group, True):
+            Power_up(elem.rect.x, elem.rect.y)
         pygame.sprite.spritecollide(self, player_group, True)
 
     def remove_explosion(self):
@@ -147,12 +148,33 @@ class Bomb_explosion(pygame.sprite.Sprite):
             self.remove_explosion()
 
 
+class Power_up(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y):
+        super().__init__(power_ups_group)
+        self.type = \
+        sample(['bomb_power', 'bomb_amount', 'character_speed', '', '', '', '', '', '', ''], k=1)[0]
+        if self.type != '':
+            self.image = load_image(f'{self.type}.png', -1)
+            self.rect = self.image.get_rect().move(pos_x, pos_y)
+        else:
+            power_ups_group.remove(self)
+
+    def power_up_lifted(self, player_id):
+        if self.type == 'bomb_power':
+            player_id.bomb_power += 1
+        elif self.type == 'bomb_amount':
+            player_id.max_bomb_placed += 1
+        else:
+            player_id.character_velocity += 0.25
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(player_group)
         self.image = player_image
         self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
-        self.bomb_power = 3
+        self.character_velocity = 4
+        self.bomb_power = 1
         self.max_bomb_placed = 1
         self.bomb_placed = 0
         self.char_width = 24
@@ -162,7 +184,7 @@ class Player(pygame.sprite.Sprite):
         self.bomb_intersect = True
 
     def place_bomb(self):
-        if self.bomb_placed <= self.max_bomb_placed:
+        if self.bomb_placed < self.max_bomb_placed:
             bomb_x = (self.rect.x + self.char_width / 2) // tile_height * tile_height
             bomb_y = (self.rect.y + self.char_height / 2) // tile_height * tile_height
             Bomb(bomb_x, bomb_y, self)
@@ -176,13 +198,13 @@ class Player(pygame.sprite.Sprite):
 
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT]:
-            self.speedx = -4
+            self.speedx = -1 * self.character_velocity
         if keystate[pygame.K_RIGHT]:
-            self.speedx = 4
+            self.speedx = self.character_velocity
         if keystate[pygame.K_DOWN]:
-            self.speedy = 4
+            self.speedy = self.character_velocity
         if keystate[pygame.K_UP]:
-            self.speedy = -4
+            self.speedy = -1 * self.character_velocity
 
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
@@ -199,6 +221,11 @@ class Player(pygame.sprite.Sprite):
             if pygame.sprite.spritecollideany(self, tiles_bomb_group):
                 self.rect.x = self.rect_0[0]
                 self.rect.y = self.rect_0[1]
+
+        if pygame.sprite.spritecollide(self, power_ups_group, False):
+            for elem in pygame.sprite.spritecollide(self, power_ups_group, False):
+                elem.power_up_lifted(self)
+                power_ups_group.remove(elem)
 
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
