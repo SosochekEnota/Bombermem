@@ -17,6 +17,7 @@ create_level()
 player_1, player_2 = generate_level_(load_level("map.txt"))
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Bombermem")
+list_of_keys = []
 
 # Главный игровой цикл
 while running:
@@ -27,19 +28,44 @@ while running:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_v:
             r.choice(clips).preview()
             screen = pygame.display.set_mode(size)
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_KP8:
+            list_of_keys.append("8")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_KP2:
+            list_of_keys.append("2")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_KP4:
+            list_of_keys.append("4")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_KP6:
+            list_of_keys.append("6")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
+            list_of_keys.append("B")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+            list_of_keys.append("A")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SLASH:
+            player_2.place_bomb()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            player_1.place_bomb()
+
         if not player_1.check():
             running = False
             win("second.png")
         if not player_2.check():
             running = False
             win("first.png")
+
+    if "".join(list_of_keys) == "88224646BA":
+        clip7.preview()
+        list_of_keys.clear()
     player_1_group.update()
     player_2_group.update()
     enemy_group.update()
+    tiles_bomb_group.update()
+    tiles_explosion_group.update()
     tiles_grass_group.draw(screen)
     tiles_box_group.draw(screen)
-    tiles_iron_group.draw(screen)
     tiles_bomb_group.draw(screen)
+    tiles_explosion_group.draw(screen)
+    power_ups_group.draw(screen)
+    tiles_iron_group.draw(screen)
     player_1_group.draw(screen)
     player_2_group.draw(screen)
     enemy_group.draw(screen)
