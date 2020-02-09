@@ -150,10 +150,12 @@ class PowerUp(pygame.sprite.Sprite):
             player_id.velocity += 0.25
 
 
-#  Класс Игрока 1
-class PlayerOne(pygame.sprite.Sprite):
-    def __init__(self, tile_type, pos_x, pos_y):
-        super().__init__(player_1_group)
+class Player(pygame.sprite.Sprite):
+    def __init__(self, tile_type, pos_x, pos_y, group, preset, preset_key):
+        super().__init__(group)
+        self.group = group
+        self.sprites = preset
+        self.keys = preset_key
         self.image = images[tile_type]
         self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
         self.speedx = 0
@@ -179,20 +181,20 @@ class PlayerOne(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
 
-        self.image = load_image("steve.png")
+        self.image = self.sprites[0]
         keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_a]:
+        if keystate[self.keys[0]]:
             self.speedx = -self.velocity
-            self.image = load_image("steve_2.png")
-        if keystate[pygame.K_d]:
+            self.image = self.sprites[2]
+        if keystate[self.keys[1]]:
             self.speedx = self.velocity
-            self.image = load_image("steve_1.png")
-        if keystate[pygame.K_s]:
+            self.image = self.sprites[1]
+        if keystate[self.keys[2]]:
             self.speedy = self.velocity
-            self.image = load_image("steve.png")
-        if keystate[pygame.K_w]:
+            self.image = self.sprites[0]
+        if keystate[self.keys[3]]:
             self.speedy = -self.velocity
-            self.image = load_image("steve_3.png")
+            self.image = self.sprites[3]
 
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
@@ -224,86 +226,28 @@ class PlayerOne(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
-        if pygame.sprite.spritecollideany(self, enemy_group) or not player_1_group:
+        if pygame.sprite.spritecollideany(self, enemy_group) or not self.group:
             self.alive = False
+            print(self.alive)
+
+
+#  Класс Игрока 1
+class PlayerOne(Player):
+    def __init__(self, tile_type, pos_x, pos_y):
+        preset = [load_image("steve.png"), load_image("steve_1.png"),
+                  load_image("steve_2.png"), load_image("steve_3.png")]
+        preset_key = [pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_w]
+        super().__init__(tile_type, pos_x, pos_y, player_1_group, preset, preset_key)
+
 
 
 #  Класс Игрока 2
-class PlayerTwo(pygame.sprite.Sprite):
+class PlayerTwo(Player):
     def __init__(self, tile_type, pos_x, pos_y):
-        super().__init__(player_2_group)
-        self.image = images[tile_type]
-        self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
-        self.speedx = 0
-        self.speedy = 0
-        self.velocity = 4
-        self.bomb_power = 1
-        self.max_bomb_placed = 1
-        self.bomb_placed = 0
-        self.char_width = 30
-        self.alive = True
-        self.char_height = 30
-        self.bomb_intersect = True
-
-    def place_bomb(self):
-        if self.bomb_placed < self.max_bomb_placed:
-            bomb_x = (self.rect.x + self.char_width / 2) // tile_height * tile_height
-            bomb_y = (self.rect.y + self.char_height / 2) // tile_height * tile_height
-            Bomb("bomb", bomb_x, bomb_y, self)
-            self.bomb_placed += 1
-            self.bomb_intersect = True
-
-    def update(self):
-        self.speedx = 0
-        self.speedy = 0
-
-        self.image = load_image("alex.png")
-        keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
-            self.speedx = -self.velocity
-            self.image = load_image("alex_2.png")
-        if keystate[pygame.K_RIGHT]:
-            self.speedx = self.velocity
-            self.image = load_image("alex_1.png")
-        if keystate[pygame.K_DOWN]:
-            self.speedy = self.velocity
-            self.image = load_image("alex.png")
-        if keystate[pygame.K_UP]:
-            self.speedy = -self.velocity
-            self.image = load_image("alex_3.png")
-
-        self.rect_0 = (self.rect.x, self.rect.y)
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-        if pygame.sprite.spritecollideany(self, tiles_box_group) or \
-                pygame.sprite.spritecollideany(self, tiles_iron_group):
-            self.rect.x = self.rect_0[0]
-            self.rect.y = self.rect_0[1]
-
-        if self.bomb_intersect is True:
-            if not pygame.sprite.spritecollideany(self, tiles_bomb_group):
-                self.bomb_intersect = False
-        else:
-            if pygame.sprite.spritecollideany(self, tiles_bomb_group):
-                self.rect.x = self.rect_0[0]
-                self.rect.y = self.rect_0[1]
-
-        if pygame.sprite.spritecollide(self, power_ups_group, False):
-            for elem in pygame.sprite.spritecollide(self, power_ups_group, False):
-                elem.power_up_lifted(self)
-                power_ups_group.remove(elem)
-
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
-
-        if pygame.sprite.spritecollideany(self, enemy_group) or not player_1_group:
-            self.alive = False
+        preset = [load_image("alex.png"), load_image("alex_1.png"),
+                  load_image("alex_2.png"), load_image("alex_3.png")]
+        preset_key = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_UP]
+        super().__init__(tile_type, pos_x, pos_y, player_2_group, preset, preset_key)
 
 
 # Класс врага

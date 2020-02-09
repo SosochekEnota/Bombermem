@@ -1,6 +1,8 @@
 from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, Enemy
 
 enemy = []
+
+
 def generate_level_(level):
     new_player_1, new_player_2, x, y = None, None, None, None
     for y in range(len(level)):
