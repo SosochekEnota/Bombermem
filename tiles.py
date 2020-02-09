@@ -134,7 +134,7 @@ class PowerUp(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(power_ups_group)
         self.type = \
-        sample(["bomb_power", "bomb_amount", "character_speed", "", "", "", "", "", "", ""], k=1)[0]
+            sample(["bomb_power", "bomb_amount", "character_speed", "", "", "", "", "", "", ""], k=1)[0]
         if self.type != "":
             self.image = load_image(f"{self.type}.png", -1)
             self.rect = self.image.get_rect().move(pos_x, pos_y)
@@ -163,6 +163,7 @@ class PlayerOne(pygame.sprite.Sprite):
         self.max_bomb_placed = 1
         self.bomb_placed = 0
         self.char_width = 30
+        self.alive = True
         self.char_height = 30
         self.bomb_intersect = True
 
@@ -196,7 +197,7 @@ class PlayerOne(pygame.sprite.Sprite):
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if pygame.sprite.spritecollideany(self, tiles_box_group) or\
+        if pygame.sprite.spritecollideany(self, tiles_box_group) or \
                 pygame.sprite.spritecollideany(self, tiles_iron_group):
             self.rect.x = self.rect_0[0]
             self.rect.y = self.rect_0[1]
@@ -223,11 +224,8 @@ class PlayerOne(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
-    def check(self):
-        alive = True
         if pygame.sprite.spritecollideany(self, enemy_group) or not player_1_group:
-            alive = False
-        return alive
+            self.alive = False
 
 
 #  Класс Игрока 2
@@ -243,6 +241,7 @@ class PlayerTwo(pygame.sprite.Sprite):
         self.max_bomb_placed = 1
         self.bomb_placed = 0
         self.char_width = 30
+        self.alive = True
         self.char_height = 30
         self.bomb_intersect = True
 
@@ -276,7 +275,7 @@ class PlayerTwo(pygame.sprite.Sprite):
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if pygame.sprite.spritecollideany(self, tiles_box_group) or\
+        if pygame.sprite.spritecollideany(self, tiles_box_group) or \
                 pygame.sprite.spritecollideany(self, tiles_iron_group):
             self.rect.x = self.rect_0[0]
             self.rect.y = self.rect_0[1]
@@ -303,11 +302,8 @@ class PlayerTwo(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
-    def check(self):
-        alive = True
-        if pygame.sprite.spritecollideany(self, enemy_group) or not player_2_group:
-            alive = False
-        return alive
+        if pygame.sprite.spritecollideany(self, enemy_group) or not player_1_group:
+            self.alive = False
 
 
 # Класс врага
@@ -320,6 +316,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speedy = 0
         self.move = [-1, -1, 1, 1]
         self.direction = 0
+        self.intersect = None
 
     def update(self):
         self.speedx = 0
@@ -333,8 +330,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect_0 = (self.rect.x, self.rect.y)
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if pygame.sprite.spritecollideany(self, tiles_box_group) or\
-                pygame.sprite.spritecollideany(self, tiles_iron_group) or\
+        if pygame.sprite.spritecollideany(self, tiles_box_group) or \
+                pygame.sprite.spritecollideany(self, tiles_iron_group) or \
                 pygame.sprite.spritecollideany(self, tiles_bomb_group):
             self.rect.x = self.rect_0[0]
             self.rect.y = self.rect_0[1]
@@ -348,3 +345,8 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+
+        if pygame.sprite.spritecollideany(self, player_1_group):
+            self.intersect = "player_1"
+        if pygame.sprite.spritecollideany(self, player_2_group):
+            self.intersect = "player_2"

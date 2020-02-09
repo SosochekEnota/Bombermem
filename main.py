@@ -14,7 +14,7 @@ FPS = 60
 running_win = False
 clock = pygame.time.Clock()
 create_level()
-player_1, player_2 = generate_level_(load_level("map.txt"))
+player_1, player_2, enemy = generate_level_(load_level("map.txt"))
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Bombermem")
 list_of_keys = []
@@ -45,19 +45,25 @@ while running:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             player_1.place_bomb()
 
-        if not player_1.check():
-            running = False
-            win("second.png")
-        if not player_2.check():
-            running = False
-            win("first.png")
-
     if "".join(list_of_keys) == "88224646BA":
         clip7.preview()
         list_of_keys.clear()
     player_1_group.update()
     player_2_group.update()
     enemy_group.update()
+    for e in enemy:
+        if e.intersect == "player_1":
+            running = False
+            win("second.png")
+        if e.intersect == "player_2":
+            running = False
+            win("second.png")
+    if not player_1.alive:
+        running = False
+        win("second.png")
+    if not player_2.alive:
+        running = False
+        win("first.png")
     tiles_bomb_group.update()
     tiles_explosion_group.update()
     tiles_grass_group.draw(screen)
