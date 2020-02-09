@@ -226,9 +226,8 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
-        if pygame.sprite.spritecollideany(self, enemy_group) or not self.group:
+        if pygame.sprite.spritecollideany(self, enemy_group):
             self.alive = False
-            print(self.alive)
 
 
 #  Класс Игрока 1
@@ -238,7 +237,6 @@ class PlayerOne(Player):
                   load_image("steve_2.png"), load_image("steve_3.png")]
         preset_key = [pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_w]
         super().__init__(tile_type, pos_x, pos_y, player_1_group, preset, preset_key)
-
 
 
 #  Класс Игрока 2

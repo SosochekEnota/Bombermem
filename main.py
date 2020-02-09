@@ -65,6 +65,13 @@ while running:
     if not player_2.alive:
         running = False
         win("second.png")
+    if not player_1_group:
+        running = False
+        win("second.png")
+    if not player_2_group:
+        running = False
+        win("first.png")
+
     tiles_bomb_group.update()
     tiles_explosion_group.update()
     tiles_grass_group.draw(screen)
