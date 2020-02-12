@@ -52,7 +52,6 @@ def win(player):
     win_group = pygame.sprite.Group()
     Button(win_group, load_image(player), 0, 250)
     check = False
-    win_screen = pygame.display.set_mode((500, 500))
     r.choice(clips).preview()
     win_screen = pygame.display.set_mode((500, 500))
     play_music(win_music)

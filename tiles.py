@@ -270,13 +270,13 @@ class Enemy(pygame.sprite.Sprite):
             return True
 
     def speed(self):
-        if self.directions[self.direction] == 'up':
+        if self.directions[self.direction % 4] == 'up':
             self.vertical_speed = -3
-        elif self.directions[self.direction] == 'right':
+        elif self.directions[self.direction % 4] == 'right':
             self.horizontal_speed = 3
-        elif self.directions[self.direction] == 'down':
+        elif self.directions[self.direction % 4] == 'down':
             self.vertical_speed = 3
-        elif self.directions[self.direction] == 'left':
+        elif self.directions[self.direction % 4] == 'left':
             self.horizontal_speed = -3
 
     def move(self):
