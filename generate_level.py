@@ -1,4 +1,5 @@
-from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, SmartEnemy, MovingEnemy
+from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, SmartEnemy, MovingEnemy, \
+    GhostEnemy
 
 enemy = []
 
@@ -25,4 +26,6 @@ def generate_level_(level):
             elif level[y][x] == "S":
                 new_smart_enemy = SmartEnemy("smart_enemy", x, y)
                 enemy.append(new_smart_enemy)
+            elif level[y][x] == "G":
+                new_ghost_enemy = GhostEnemy("ghost_enemy", x, y, new_player_1)
     return new_player_1, new_player_2, enemy

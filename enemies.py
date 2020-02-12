@@ -90,3 +90,25 @@ class SmartEnemy(Enemy):
     def re_generate(self):
         self.generated_time = randint(120, 300)
         self.direction = randint(1, 4)
+
+
+class GhostEnemy(Enemy):
+    def __init__(self, tile_type, pos_x, pos_y, player):
+        super().__init__(tile_type, pos_x, pos_y)
+        self.image = images[tile_type]
+        self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
+        self.horizontal_speed = 0
+        self.vertical_speed = 0
+        self.player = player
+
+    def update(self):
+        if self.rect.x < self.player.rect.x:
+            self.horizontal_speed = -0.5
+        elif self.rect.x > self.player.rect.x:
+            self.horizontal_speed = 0.5
+        if self.rect.y > self.player.rect.y:
+            self.vertical_speed = 0.5
+        elif self.rect.y < self.player.rect.y:
+            self.vertical_speed = -0.5
+
+        self.move()
