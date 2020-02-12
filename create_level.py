@@ -10,8 +10,14 @@ def create_level():
 
     for elem in field:
         for k in range(len(elem)):
-            if not r(0, 20):
-                elem[k] = "E"
+            if not r(0, 8):
+                number = r(1, 3)
+                if number == 1:
+                    elem[k] = "E"
+                elif number == 2:
+                    elem[k] = "S"
+                elif number == 3:
+                    elem[k] = "M"
     for i in range(FIELD_SIZE):
         for j in range(FIELD_SIZE):
             if i % 2 == 0 and j % 2 == 0:

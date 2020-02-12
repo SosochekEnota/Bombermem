@@ -1,6 +1,6 @@
 import pygame
 from load_image import load_image
-from random import sample
+from random import sample, randint
 
 size = WIDTH, HEIGHT = 950, 950
 screen = pygame.display.set_mode(size)
@@ -8,7 +8,8 @@ pygame.display.set_caption("Bombermem")
 images = {"wall": load_image("wood.png"), "grass": load_image("grass.png"),
           "iron": load_image("iron.png"), "player_1": load_image("steve.png"),
           "player_2": load_image("alex.png"), "enemy": load_image("enemy.png"),
-          "bomb": load_image("bomb.png", -1)}
+          "moving_enemy": load_image("moving_enemy.png"), "smart_enemy": load_image("smart_enemy.png"),
+          "ghost_enemy": load_image("ghost_enemy.png"), "bomb": load_image("bomb.png", -1)}
 
 tiles_grass_group = pygame.sprite.Group()
 tiles_iron_group = pygame.sprite.Group()
@@ -150,6 +151,7 @@ class PowerUp(pygame.sprite.Sprite):
             player_id.velocity += 0.25
 
 
+#  Класс Игрока
 class Player(pygame.sprite.Sprite):
     def __init__(self, tile_type, pos_x, pos_y, group, preset, preset_key):
         super().__init__(group)
@@ -254,31 +256,30 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__(enemy_group)
         self.image = images[tile_type]
         self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
-        self.speedx = 0
-        self.speedy = 0
-        self.move = [-1, -1, 1, 1]
-        self.direction = 0
-        self.intersect = None
+        self.horizontal_speed = 0
+        self.vertical_speed = 0
+        self.generated_time = randint(120, 300)
+        self.directions = ['up', 'right', 'down', 'left']
+        self.direction = 0  # direction represented as index of element from self.directions
+        self.intersect = False
 
-    def update(self):
-        self.speedx = 0
-        self.speedy = 0
-
-        if self.direction % 4 in [0, 2]:
-            self.speedx = 3 * self.move[self.direction % 4]
-        else:
-            self.speedy = 3 * self.move[self.direction % 4]
-
-        self.rect_0 = (self.rect.x, self.rect.y)
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+    def collide(self):
         if pygame.sprite.spritecollideany(self, tiles_box_group) or \
                 pygame.sprite.spritecollideany(self, tiles_iron_group) or \
                 pygame.sprite.spritecollideany(self, tiles_bomb_group):
-            self.rect.x = self.rect_0[0]
-            self.rect.y = self.rect_0[1]
-            self.direction += 1
+            return True
 
+    def speed(self):
+        if self.directions[self.direction] == 'up':
+            self.vertical_speed = -3
+        elif self.directions[self.direction] == 'right':
+            self.horizontal_speed = 3
+        elif self.directions[self.direction] == 'down':
+            self.vertical_speed = 3
+        elif self.directions[self.direction] == 'left':
+            self.horizontal_speed = -3
+
+    def move(self):
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
@@ -288,7 +289,85 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
+        self.rect.x += self.horizontal_speed
+        self.rect.y += self.vertical_speed
+
+    def checker(self):
         if pygame.sprite.spritecollideany(self, player_1_group):
             self.intersect = "player_1"
         if pygame.sprite.spritecollideany(self, player_2_group):
             self.intersect = "player_2"
+
+
+#  Класс лоубота
+class StandingEnemy(Enemy):
+    def update(self):
+        super().checker()
+
+
+#  Класс средбота
+class MovingEnemy(Enemy):
+    def update(self):
+        self.horizontal_speed = 0
+        self.vertical_speed = 0
+
+        self.speed()
+
+        self.rect_0 = (self.rect.x, self.rect.y)
+
+        self.move()
+
+        if self.collide():
+            self.rect.x = self.rect_0[0]
+            self.rect.y = self.rect_0[1]
+            self.direction += 1
+
+        super().checker()
+
+
+class SmartEnemy(Enemy):
+    def update(self):
+        self.vertical_speed = 0
+        self.horizontal_speed = 0
+
+        self.rect_0 = (self.rect.x, self.rect.y)
+
+        if not self.generated_time or self.collide():
+            if not self.generated_time:
+                self.re_generate()
+            if self.collide():
+                self.re_generate()
+                self.rect.x = self.rect_0[0]
+                self.rect.y = self.rect_0[1]
+        else:
+            self.speed()
+            self.move()
+
+        super().checker()
+
+    def re_generate(self):
+        self.generated_time = randint(120, 300)
+        self.direction = randint(1, 4)
+
+
+class GhostEnemy(Enemy):
+    def __init__(self, tile_type, pos_x, pos_y, player):
+        super().__init__(tile_type, pos_x, pos_y)
+        self.image = images[tile_type]
+        self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
+        self.horizontal_speed = 0
+        self.vertical_speed = 0
+        self.player = player
+
+    def update(self):
+        if self.rect.x < self.player.rect.x:
+            self.horizontal_speed = -0.5
+        elif self.rect.x > self.player.rect.x:
+            self.horizontal_speed = 0.5
+        if self.rect.y > self.player.rect.y:
+            self.vertical_speed = 0.5
+        elif self.rect.y < self.player.rect.y:
+            self.vertical_speed = -0.5
+
+        self.move()
+        super().checker()

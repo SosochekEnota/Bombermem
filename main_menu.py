@@ -42,7 +42,8 @@ class Mouse(pygame.sprite.Sprite):
         self.rect.y = coords[1]
 
 
-start_button = Button(play, load_image("start.png"), 0, 200)
+start_button_1 = Button(play, load_image("start_1.png"), 0, 200)
+start_button_2 = Button(play, load_image("start_2.png"), 250, 200)
 Button(hint, load_image("hint.png"), 0, 250)
 Button(title, load_image("title.png"), 0, 0)
 Mouse(mouse, load_image("mouse.png"))
@@ -66,7 +67,7 @@ while running_main:
     mouse.draw(main_screen)
     #  Проверить нажатие на кнопку старт
     if check:
-        running = start_button.update()
+        running = start_button_2.update()
         if running:
             running_main = False
             stop_music()

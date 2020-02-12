@@ -52,6 +52,7 @@ def win(player):
     win_group = pygame.sprite.Group()
     Button(win_group, load_image(player), 0, 250)
     check = False
+    win_screen = pygame.display.set_mode((500, 500))
     r.choice(clips).preview()
     win_screen = pygame.display.set_mode((500, 500))
     play_music(win_music)
@@ -61,6 +62,7 @@ def win(player):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running_win = False
+                exit(0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 check = True
             if event.type == pygame.MOUSEMOTION:
