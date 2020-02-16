@@ -102,11 +102,13 @@ if players == "one":
 
         if not player_1.alive:
             running_two = False
-            win("first.png")
+            win("one.png")
 
         if not player_1_group:
             running_two = False
-            win("first.png")
+            win("one.png")
+
+        #one_w - when player wins
 
         tiles_bomb_group.update()
         tiles_explosion_group.update()
