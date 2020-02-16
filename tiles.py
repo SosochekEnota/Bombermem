@@ -9,13 +9,15 @@ images = {"wall": load_image("wood.png"), "grass": load_image("grass.png"),
           "iron": load_image("iron.png"), "player_1": load_image("steve.png"),
           "player_2": load_image("alex.png"), "enemy": load_image("enemy.png"),
           "moving_enemy": load_image("moving_enemy.png"), "smart_enemy": load_image("smart_enemy.png"),
-          "ghost_enemy": load_image("ghost_enemy.png"), "bomb": load_image("bomb.png", -1)}
+          "ghost_enemy": load_image("ghost_enemy.png"), "bomb": load_image("bomb.png", -1),
+          "door": load_image("trapdoor.png")}
 
 tiles_grass_group = pygame.sprite.Group()
 tiles_iron_group = pygame.sprite.Group()
 tiles_box_group = pygame.sprite.Group()
 player_1_group = pygame.sprite.Group()
 player_2_group = pygame.sprite.Group()
+door_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 tiles_explosion_group = pygame.sprite.Group()
 tiles_bomb_group = pygame.sprite.Group()
@@ -45,6 +47,16 @@ class Iron(pygame.sprite.Sprite):
         super().__init__(tiles_iron_group)
         self.image = images[tile_type]
         self.rect = self.image.get_rect().move(tile_width * pos_x, tile_height * pos_y)
+
+
+class Door(pygame.sprite.Sprite):
+    def __init__(self, tile_type, pos_x, pos_y):
+        super().__init__(door_group)
+        self.image = images[tile_type]
+        self.rect = self.image.get_rect().move(tile_width * pos_x, tile_height * pos_y)
+
+    def update(self):
+        pass
 
 
 # Бомба

@@ -1,9 +1,9 @@
-from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, MovingEnemy, SmartEnemy, GhostEnemy
+from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, MovingEnemy, SmartEnemy, GhostEnemy, Door
 
 enemy = []
 
 
-def generate_level_(level):
+def generate_level_(level, players):
     new_player_1, new_player_2, x, y = None, None, None, None
     for y in range(len(level)):
         for x in range(len(level[y])):
@@ -14,8 +14,10 @@ def generate_level_(level):
                 Iron("iron", x, y)
             elif level[y][x] == "1":
                 new_player_1 = PlayerOne("player_1", x, y)  # Player 1 tile creation
-            elif level[y][x] == "2":
+            elif level[y][x] == "2" and players == "two":
                 new_player_2 = PlayerTwo("player_2", x, y)  # Player 2 tile creation
+            elif level[y][x] == "2" and players == "one":
+                Door("door", x, y)
             elif level[y][x] == "E":
                 new_enemy = StandingEnemy("enemy", x, y)  # Standing Enemy tile creation
                 enemy.append(new_enemy)

@@ -1,7 +1,8 @@
 import pygame
 from load_image import load_image
-from video import clip5
+from video import clip5, clip7
 from music import main_menu_music, play_music, stop_music
+
 
 main_screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Bombermem")
@@ -10,6 +11,7 @@ hint = pygame.sprite.Group()
 title = pygame.sprite.Group()
 mouse = pygame.sprite.Group()
 running = False
+list_of_keys = []  # Список нажатий на клавиатуру для проверки Konami-code
 check = False
 
 
@@ -59,6 +61,24 @@ while running_main:
             check = True
         if event.type == pygame.MOUSEMOTION:
             mouse.update(event.pos)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_KP8:
+                list_of_keys.append("8")
+            if event.key == pygame.K_KP2:
+                list_of_keys.append("2")
+            if event.key == pygame.K_KP4:
+                list_of_keys.append("4")
+            if event.key == pygame.K_KP6:
+                list_of_keys.append("6")
+            if event.key == pygame.K_b:
+                list_of_keys.append("B")
+            if event.key == pygame.K_a:
+                list_of_keys.append("A")
+
+    if "88224646BA" in "".join(list_of_keys):
+        clip7.preview()
+        list_of_keys.clear()
+        main_screen = pygame.display.set_mode((500, 500))
 
     main_screen.fill(pygame.Color("white"))
     play.draw(main_screen)
@@ -67,8 +87,16 @@ while running_main:
     mouse.draw(main_screen)
     #  Проверить нажатие на кнопку старт
     if check:
-        running = start_button_2.update()
-        if running:
+        two_players = start_button_2.update()
+        one_player = start_button_1.update()
+        if two_players:
+            running = True
+            players = "two"
+            running_main = False
+            stop_music()
+        if one_player:
+            running = True
+            players = "one"
             running_main = False
             stop_music()
         check = False
