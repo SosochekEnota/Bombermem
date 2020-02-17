@@ -36,7 +36,7 @@ def create_level(players):
     field[0], field[-1] = ["*" * FIELD_SIZE], ["*" * FIELD_SIZE]
 
     if players == "one":
-        key_x, key_y = r(0, FIELD_SIZE - 1), r(0, FIELD_SIZE - 1)
+        key_x, key_y = r(1, FIELD_SIZE - 2), r(1, FIELD_SIZE - 2)
         field[key_y][key_x] = "K"
 
     field[1][1], field[FIELD_SIZE - 2][FIELD_SIZE - 2] = "1", "2"

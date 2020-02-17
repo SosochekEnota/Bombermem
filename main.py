@@ -98,21 +98,38 @@ if players == "one":
         for e in enemy:  # Проверка пересечения врагов с игроками
             if e.intersect == "player_1":
                 running_two = False
-                win("first.png")
+                win("one_lose.png")
 
         if not player_1.alive:
             running_two = False
-            win("one.png")
+            win("one_lose.png")
 
         if not player_1_group:
             running_two = False
-            win("one.png")
+            win("one_lose.png")
+
+        if player_1.open:
+            create_level("one")
+            tiles_grass_group.clear()
+            tiles_iron_group.clear()
+            tiles_box_group.clear()
+            player_1_group.clear()
+            player_2_group.clear()
+            door_group.clear()
+            enemy_group.clear()
+            tiles_explosion_group.clear()
+            tiles_bomb_group.clear()
+            power_ups_group.clear()
+            key_group.clear()
+
+            player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one")
 
         #one_w - when player wins
 
         tiles_bomb_group.update()
         tiles_explosion_group.update()
         tiles_grass_group.draw(screen)
+        key_group.draw(screen)
         tiles_box_group.draw(screen)
         tiles_bomb_group.draw(screen)
         tiles_explosion_group.draw(screen)
