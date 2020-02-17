@@ -10,7 +10,7 @@ images = {"wall": load_image("wood.png"), "grass": load_image("grass.png"),
           "player_2": load_image("alex.png"), "enemy": load_image("enemy.png"),
           "moving_enemy": load_image("moving_enemy.png"), "smart_enemy": load_image("smart_enemy.png"),
           "ghost_enemy": load_image("ghost_enemy.png"), "bomb": load_image("bomb.png", -1),
-          "door": load_image("trapdoor.png"), "key": load_image("key.png")}
+          "door": load_image("trapdoor.png"), "key": load_image("key.png", -1)}
 
 tiles_grass_group = pygame.sprite.Group()
 tiles_iron_group = pygame.sprite.Group()
