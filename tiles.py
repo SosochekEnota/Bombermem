@@ -189,6 +189,7 @@ class Player(pygame.sprite.Sprite):
         self.bomb_placed = 0
         self.char_width = 30
         self.open = False  # Open trapdoor flag
+        self.trapdoor = False
         self.alive = True
         self.char_height = 30
         self.bomb_intersect = True
@@ -243,6 +244,10 @@ class Player(pygame.sprite.Sprite):
 
         if pygame.sprite.spritecollideany(self, key_group):
             self.open = True
+            key_group.empty()
+
+        if pygame.sprite.spritecollideany(self, door_group) and self.open == True:
+            self.trapdoor = True
 
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH

@@ -108,19 +108,19 @@ if players == "one":
             running_two = False
             win("one_lose.png")
 
-        if player_1.open:
+        if player_1.open and player_1.trapdoor:
             create_level("one")
-            tiles_grass_group.clear()
-            tiles_iron_group.clear()
-            tiles_box_group.clear()
-            player_1_group.clear()
-            player_2_group.clear()
-            door_group.clear()
-            enemy_group.clear()
-            tiles_explosion_group.clear()
-            tiles_bomb_group.clear()
-            power_ups_group.clear()
-            key_group.clear()
+            tiles_grass_group.empty()
+            tiles_iron_group.empty()
+            tiles_box_group.empty()
+            player_1_group.empty()
+            player_2_group.empty()
+            door_group.empty()
+            enemy_group.empty()
+            tiles_explosion_group.empty()
+            tiles_bomb_group.empty()
+            power_ups_group.empty()
+            key_group.empty()
 
             player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one")
 
