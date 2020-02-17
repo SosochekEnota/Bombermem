@@ -168,7 +168,7 @@ class Key(pygame.sprite.Sprite):
     def __init__(self, tile_type, pos_x, pos_y):
         super().__init__(key_group)
         self.image = images[tile_type]
-        self.rect = self.image.get_rect().move(pos_x * tile_width + 15, pos_y * tile_height + 15)
+        self.rect = self.image.get_rect().move(pos_x * tile_width + 17, pos_y * tile_height + 10)
 
 
 #  Класс Игрока

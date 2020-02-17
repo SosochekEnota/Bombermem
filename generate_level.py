@@ -1,5 +1,5 @@
 from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, MovingEnemy, SmartEnemy, \
-    GhostEnemy, Door
+    GhostEnemy, Door, Key
 
 enemy = []
 
