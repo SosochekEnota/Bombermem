@@ -73,9 +73,9 @@ if players == "two":
 if players == "one":
     FPS = 60
     running_win = False
-    level = 10
+    level = 13
     clock = pygame.time.Clock()
-    #create_level(players)
+    create_level(players)
     player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one")
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Bombermem")
@@ -128,8 +128,6 @@ if players == "one":
             key_group.empty()
 
             player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one", level)
-
-        #one_w - when player wins
 
         tiles_bomb_group.update()
         tiles_explosion_group.update()

@@ -22,9 +22,9 @@ def generate_level_(level, players, lvl=0):
                 new_player_2 = PlayerTwo("player_2", x, y)  # Player 2 tile creation
             elif level[y][x] == "2" and players == "one":
                 Door("door", x, y)
-                if lvl >= 10:
-                    new_ghost_enemy = GhostEnemy("ghost_enemy", x, y, new_player_1)
-                    enemy.append(new_ghost_enemy)
+                #  if lvl >= 10:
+                #  new_ghost_enemy = GhostEnemy("ghost_enemy", x, y, new_player_1)
+                #  enemy.append(new_ghost_enemy)
             elif level[y][x] == "E":
                 new_enemy = StandingEnemy("enemy", x, y)  # Standing Enemy tile creation
                 enemy.append(new_enemy)
