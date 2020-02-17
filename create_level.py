@@ -5,7 +5,7 @@ FIELD_SIZE = 19
 
 
 #  Функция создания уровня
-def create_level():
+def create_level(players):
     field = [["#" if r(0, 1) else "." for _ in range(FIELD_SIZE)] for _ in range(FIELD_SIZE)]
 
     for elem in field:
@@ -34,6 +34,10 @@ def create_level():
         elem[0], elem[-1] = "*", "*"
 
     field[0], field[-1] = ["*" * FIELD_SIZE], ["*" * FIELD_SIZE]
+
+    if players == "one":
+        key_x, key_y = r(0, FIELD_SIZE - 1), r(0, FIELD_SIZE - 1)
+        field[key_y][key_x] = "K"
 
     field[1][1], field[FIELD_SIZE - 2][FIELD_SIZE - 2] = "1", "2"
     os.remove("data\\map.txt")

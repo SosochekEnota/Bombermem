@@ -13,7 +13,7 @@ if players == "two":
     FPS = 60
     running_win = False
     clock = pygame.time.Clock()
-    create_level()
+    create_level(players)
     player_1, player_2, enemy = generate_level_(load_level("map.txt"), "two")
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Bombermem")
@@ -74,7 +74,7 @@ if players == "one":
     FPS = 60
     running_win = False
     clock = pygame.time.Clock()
-    create_level()
+    create_level(players)
     player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one")
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Bombermem")

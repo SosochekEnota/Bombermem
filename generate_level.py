@@ -1,4 +1,5 @@
-from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, MovingEnemy, SmartEnemy, GhostEnemy, Door
+from tiles import Iron, Grass, Wood, PlayerOne, PlayerTwo, StandingEnemy, \
+    MovingEnemy, SmartEnemy, GhostEnemy, Door, Key
 
 enemy = []
 
@@ -8,6 +9,9 @@ def generate_level_(level, players):
     for y in range(len(level)):
         for x in range(len(level[y])):
             Grass("grass", x, y)
+            if level[y][x] == "K":
+                Key("key", x, y)
+                Wood("wall", x, y)
             if level[y][x] == "#":  # Wood tile creation
                 Wood("wall", x, y)
             elif level[y][x] == "*":  # Iron tile creation
