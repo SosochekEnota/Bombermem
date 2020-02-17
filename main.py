@@ -73,8 +73,9 @@ if players == "two":
 if players == "one":
     FPS = 60
     running_win = False
+    level = 10
     clock = pygame.time.Clock()
-    create_level(players)
+    #create_level(players)
     player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one")
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Bombermem")
@@ -109,6 +110,10 @@ if players == "one":
             win("one_lose.png")
 
         if player_1.open and player_1.trapdoor:
+            level += 1
+            if level > 13:
+                running = False
+                win("one.png")
             create_level("one")
             tiles_grass_group.empty()
             tiles_iron_group.empty()
@@ -122,7 +127,7 @@ if players == "one":
             power_ups_group.empty()
             key_group.empty()
 
-            player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one")
+            player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one", level)
 
         #one_w - when player wins
 

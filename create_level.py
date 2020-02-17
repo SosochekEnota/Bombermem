@@ -36,12 +36,12 @@ def create_level(players):
 
     field[0], field[-1] = ["*" * FIELD_SIZE], ["*" * FIELD_SIZE]
 
-    if players == 'one':
+    if players == "one":
         while no_key:
             key_x, key_y = r(1, FIELD_SIZE - 1), r(1, FIELD_SIZE - 1)
             if key_x % 2 != 0 and key_y % 2 != 0:
                 if (key_x >= 5 and key_y <= 14) or (key_x <= 14 and key_y >= 5):
-                    field[key_y][key_x] = 'K'
+                    field[key_y][key_x] = "K"
                     no_key = False
 
     field[1][1], field[FIELD_SIZE - 2][FIELD_SIZE - 2] = "1", "2"
