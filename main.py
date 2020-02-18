@@ -73,7 +73,7 @@ if players == "two":
 if players == "one":
     FPS = 60
     running_win = False
-    level = 10
+    level = 1
     clock = pygame.time.Clock()
     create_level(players)
     player_1, player_2, enemy, ghost = generate_level_(load_level("map.txt"), "one", level)
