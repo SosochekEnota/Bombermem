@@ -5,7 +5,7 @@ enemy = []
 
 
 def generate_level_(level, players, lvl=0):
-    new_player_1, new_player_2, x, y = None, None, None, None
+    new_player_1, new_player_2, new_ghost_enemy, x, y = None, None, None, None, None
     for y in range(len(level)):
         for x in range(len(level[y])):
             Grass("grass", x, y)
@@ -34,5 +34,4 @@ def generate_level_(level, players, lvl=0):
             elif level[y][x] == "S":
                 new_smart_enemy = SmartEnemy("smart_enemy", x, y)
                 enemy.append(new_smart_enemy)
-
-    return new_player_1, new_player_2, enemy
+    return new_player_1, new_player_2, enemy, new_ghost_enemy

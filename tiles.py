@@ -393,15 +393,24 @@ class GhostEnemy(Enemy):
         self.vertical_speed = 0
         self.player = player
 
-    def update(self):
+    def speed(self, level):
         if self.rect.x < self.player.rect.x:
-            self.horizontal_speed = 1
+            self.horizontal_speed = 1 * (level - 9)
         elif self.rect.x > self.player.rect.x:
-            self.horizontal_speed = -1
+            self.horizontal_speed = -1 * (level - 9)
         if self.rect.y > self.player.rect.y:
-            self.vertical_speed = -1
+            self.vertical_speed = -1 * (level - 9)
         elif self.rect.y < self.player.rect.y:
-            self.vertical_speed = 1
+            self.vertical_speed = 1 * (level - 9)
 
+    def update(self):
         self.move()
+
+        self.rect_0 = (self.rect.x, self.rect.y)
+
+        if self.collide():
+            self.rect.x = self.rect_0[0]
+            self.rect.y = self.rect_0[1]
+            self.direction += 1
+
         super().checker()

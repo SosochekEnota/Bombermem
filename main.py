@@ -14,7 +14,7 @@ if players == "two":
     running_win = False
     clock = pygame.time.Clock()
     create_level(players)
-    player_1, player_2, enemy = generate_level_(load_level("map.txt"), "two")
+    player_1, player_2, enemy, nothing = generate_level_(load_level("map.txt"), "two")
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Bombermem")
 
@@ -76,7 +76,7 @@ if players == "one":
     level = 10
     clock = pygame.time.Clock()
     create_level(players)
-    player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one", level)
+    player_1, player_2, enemy, ghost = generate_level_(load_level("map.txt"), "one", level)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Bombermem")
 
@@ -95,6 +95,7 @@ if players == "one":
 
         player_1_group.update()
         door_group.update()
+        ghost.speed(level)
         enemy_group.update()
         for e in enemy:  # Проверка пересечения врагов с игроками
             if e.intersect == "player_1":
@@ -111,7 +112,7 @@ if players == "one":
 
         if player_1.open and player_1.trapdoor:
             level += 1
-            if level > 13:
+            if level > 69:
                 running = False
                 win("one.png")
             create_level("one")
@@ -127,7 +128,7 @@ if players == "one":
             power_ups_group.empty()
             key_group.empty()
 
-            player_1, player_2, enemy = generate_level_(load_level("map.txt"), "one", level)
+            player_1, player_2, enemy, ghost = generate_level_(load_level("map.txt"), "one", level)
 
         tiles_bomb_group.update()
         tiles_explosion_group.update()
