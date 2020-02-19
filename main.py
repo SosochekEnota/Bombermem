@@ -95,7 +95,8 @@ if players == "one":
 
         player_1_group.update()
         door_group.update()
-        ghost.speed(level)
+        if ghost is not None:
+            ghost.speed(level)
         enemy_group.update()
         for e in enemy:  # Проверка пересечения врагов с игроками
             if e.intersect == "player_1":
